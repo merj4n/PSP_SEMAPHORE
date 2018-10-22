@@ -40,9 +40,9 @@ private final int[][] palillos_filosofo;
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
-            System.out.println("Filosofo ["+id+"] ha terminado de comer.");
             palillos_usados[palilloDe].release();
             palillos_usados[palilloIz].release();
+            System.out.println("Filosofo ["+id+"] ha terminado de comer.");
         } else{
             System.out.println("Palillo IZQ ocupado, el filosofo ["+id+"] no puede comer.");
         }
@@ -54,7 +54,7 @@ private final int[][] palillos_filosofo;
     public synchronized void pensar(){
         System.out.println("Filosofo ["+id+"] pensando.");
         try {
-            Filosofo.sleep((int) ((Math.random()*2000)+2000));
+            Filosofo.sleep((int) ((Math.random()*1000)+1000));
         }catch (InterruptedException e){
             e.printStackTrace();
         }
