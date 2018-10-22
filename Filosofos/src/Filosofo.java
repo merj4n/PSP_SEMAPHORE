@@ -28,7 +28,7 @@ private final int[][] palillos_filosofo;
      * Tanto si palillo izq como dcho estan ocupados
      */
 
-    public void comer(){
+    public synchronized void comer(){
         if (palillos_usados[palilloIz].tryAcquire()){
             if (palillos_usados[palilloDe].tryAcquire()){
                 System.out.println("Filosofo ["+id+"] comiendo.");
@@ -51,7 +51,7 @@ private final int[][] palillos_filosofo;
     /**
      * Con este metodo solo enviamos a nuestro filosofo a pensar entre 2 y 4 segundos.
      */
-    public void pensar(){
+    public synchronized void pensar(){
         System.out.println("Filosofo ["+id+"] pensando.");
         try {
             Filosofo.sleep((int) ((Math.random()*2000)+2000));
@@ -62,8 +62,8 @@ private final int[][] palillos_filosofo;
     @Override
     public void run(){
         while (true){
-            comer();
             pensar();
+            comer();
         }
     }
 
