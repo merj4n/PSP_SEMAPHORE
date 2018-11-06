@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Filosofos/Filosofos.iml" filepath="$PROJECT_DIR$/Filosofos/Filosofos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Monitores/Monitores.iml" filepath="$PROJECT_DIR$/Monitores/Monitores.iml" />
       <module fileurl="file://$PROJECT_DIR$/PSP_SEMAPHORE.iml" filepath="$PROJECT_DIR$/PSP_SEMAPHORE.iml" />
     </modules>
   </component>
