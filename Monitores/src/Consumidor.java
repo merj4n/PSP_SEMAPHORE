@@ -5,7 +5,6 @@ public class Consumidor extends Thread{
         this.id=id;
         this.bu=bu;
     }
-
     public void run(){
         while (true){
             bu.Consumir(id);

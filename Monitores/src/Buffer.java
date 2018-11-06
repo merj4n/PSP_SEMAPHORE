@@ -2,46 +2,50 @@ import java.io.*;
 
 public class Buffer {
     static final String RUTA="C:/Users/merjan/Desktop/Prueba.txt";
-    File archivo = null;
-    FileReader fr = null;
-    BufferedReader br = null;
-    private boolean ocupado = false;
+
+    private boolean ocupado_writer = false;
+    private boolean ocupado_reader = false;
 
     public synchronized void Almacenar(int id) {
-        while (!ocupado) {
-            ocupado = true;
-            FileWriter fichero = null;
+        while (!ocupado_writer && !ocupado_reader) {
+            ocupado_writer = true;
             try {
-                fichero = new FileWriter(RUTA, true);
-                BufferedWriter escribe = new BufferedWriter(fichero);
+                BufferedWriter escribe = new BufferedWriter(new FileWriter(RUTA,true));
                 escribe.write("Productor ["+id+"]");
                 escribe.newLine();
+                escribe.close();
+                Thread.sleep(500);
+                wait();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        ocupado = false;
+        ocupado_writer = false;
         notifyAll();
     }
     public synchronized void Consumir(int id) {
-        while (!ocupado) {
-            ocupado = true;
-            archivo = new File(RUTA);
+        while (!ocupado_writer) {
+            ocupado_reader = true;
             try {
-                fr = new FileReader(archivo);
-                br = new BufferedReader(fr);
+                BufferedReader br = new BufferedReader(new FileReader(RUTA));
                 String linea;
                 while((linea=br.readLine())!=null) {
-                    System.out.println(linea);
+                    System.out.println("Consumidor ["+id+"]"+" lee: "+linea);
                 }
+                Thread.sleep(500);
+                br.close();
+                wait();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
         }
-        ocupado = false;
+        ocupado_reader = false;
         notifyAll();
     }
 }
