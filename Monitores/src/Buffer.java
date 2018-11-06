@@ -1,56 +1,47 @@
-import java.util.ArrayList;
+import java.io.*;
 
 public class Buffer {
- int maxTamanyo;
- private boolean lleno = false;
-    ArrayList<String> lista = new ArrayList<>();
-    Buffer(int maxTamanyo) {
-        this.maxTamanyo = maxTamanyo;
-    }
+    static final String RUTA="C:/Users/merjan/Desktop/Prueba.txt";
+    File archivo = null;
+    FileReader fr = null;
+    BufferedReader br = null;
+    private boolean ocupado = false;
 
     public synchronized void Almacenar(int id) {
-        while (lleno) {
-            try
-            {
-                if (maxTamanyo == this.lista.size()) {
-                    System.out.println("Productor [" + id + "] esta esperando porque esta llena.");
-                    wait();
-                    return;
-                } else {
-                    System.out.println("Productor [" + id + "] esta depositando.");
-                    Thread.sleep(1000);
-                    lista.add("Peras");
-                    System.out.println("Productor [" + id + "] ha terminado.");
-                    wait();
-                }
-            }
-            catch (InterruptedException e)
-            {
-                System.err.println(e.getMessage());
+        while (!ocupado) {
+            ocupado = true;
+            FileWriter fichero = null;
+            try {
+                fichero = new FileWriter(RUTA, true);
+                BufferedWriter escribe = new BufferedWriter(fichero);
+                escribe.write("Productor ["+id+"]");
+                escribe.newLine();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        lleno = Boolean.TRUE;
+        ocupado = false;
         notifyAll();
     }
     public synchronized void Consumir(int id) {
-        while (!lleno) {
-            try
-            {
-                if (lista.isEmpty()){
-                    System.out.println("Consumidor [" + id + "] esta esperando porque esta vacia.");
-                    return;
-                }else {
-                    System.out.println("Consumidor [" + id + "] esta consumiendo.");
-                    Thread.sleep(500);
-                    lista.remove("Peras");
-                    System.out.println("Consumidor [" + id + "] ha terminado.");
+        while (!ocupado) {
+            ocupado = true;
+            archivo = new File(RUTA);
+            try {
+                fr = new FileReader(archivo);
+                br = new BufferedReader(fr);
+                String linea;
+                while((linea=br.readLine())!=null) {
+                    System.out.println(linea);
                 }
-            } catch (InterruptedException e)
-            {
-                System.err.println(e.getMessage());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
         }
-        lleno = Boolean.FALSE;
+        ocupado = false;
         notifyAll();
     }
 }

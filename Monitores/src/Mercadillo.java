@@ -1,19 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Mercadillo {
     public static void main(String[] args) {
-        Buffer bu = new Buffer(3);
-        List<Productor> lispr = new ArrayList<>();
-        List<Consumidor> liscr = new ArrayList<>();
-        for(int i=0;i<3;i++) {
-            lispr.add( new Productor(i, bu));
-            liscr.add(new Consumidor(i, bu));
-        }
-        for (Productor p:lispr) {
+        Buffer bu= new Buffer();
+        for(int i=0;i<10;i++) {
+            Productor p = new Productor(i,bu);
+            Consumidor c = new Consumidor(i,bu);
             p.start();
-        }
-        for (Consumidor c:liscr) {
             c.start();
         }
     }
